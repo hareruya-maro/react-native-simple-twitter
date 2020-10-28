@@ -113,7 +113,7 @@ class Client {
   /**
    * call Twitter Api
    */
-  upload = async <T>(method: Method, endpoint: string, params: any = {}): Promise<T> => {
+  upload = async <T>(method: Method, endpoint: string, params: any = {}, data?: any): Promise<T> => {
     const apiEndpoint = endpoint.slice(0, 1) !== '/' ? `/${endpoint}` : endpoint;
 
     this.TokenRequestHeaderParams = Util.createTokenRequestHeaderParams(this.ConsumerKey, { token: this.Token, params });
@@ -123,6 +123,7 @@ class Client {
       method,
       uploadURL + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
       this.TokenRequestHeaderParams,
+      data
     );
 
     if ('errors' in result) {
