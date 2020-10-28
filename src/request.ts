@@ -2,7 +2,7 @@
 import * as Util from './util';
 import { Method, ErrorResponse } from './types';
 
-const request = async <T>(method: Method = 'GET', url: string = '', params: any = {}): Promise<T | ErrorResponse> => {
+const request = async <T>(method: Method = 'GET', url: string = '', params: any = {}, data?: any): Promise<T | ErrorResponse> => {
   const uri = url
     .replace(/!/g, '%21')
     .replace(/'/g, '%27')
@@ -10,12 +10,16 @@ const request = async <T>(method: Method = 'GET', url: string = '', params: any 
     .replace(/\)/g, '%29')
     .replace(/\*/g, '%2A');
 
-  const options = {
+  const options: { method: string, headers: { [key: string]: string; }, body?: any } = {
     method,
     headers: {
       Authorization: Util.createHeaderString(params),
     },
   };
+  if (!!data) {
+    options.headers["Content-Type"] = 'multipart/form-data';
+    options.body = JSON.stringify(data);
+  }
 
   const response = await fetch(uri, options);
 

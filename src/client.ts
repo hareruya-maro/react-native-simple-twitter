@@ -11,6 +11,7 @@ import CustomError from './error';
 
 /* const */
 const baseURL: string = 'https://api.twitter.com';
+const uploadURL: string = 'https://upload.twitter.com/1.1';
 const requestTokenURL: string = '/oauth/request_token';
 const authorizationURL: string = '/oauth/authorize';
 const accessTokenURL: string = '/oauth/access_token';
@@ -99,6 +100,28 @@ class Client {
     const result = await Request<T>(
       method,
       baseURL + '/' + version + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
+      this.TokenRequestHeaderParams,
+    );
+
+    if ('errors' in result) {
+      throw new CustomError(result);
+    }
+
+    return result;
+  }
+
+  /**
+   * call Twitter Api
+   */
+  upload = async <T>(method: Method, endpoint: string, params: any = {}): Promise<T> => {
+    const apiEndpoint = endpoint.slice(0, 1) !== '/' ? `/${endpoint}` : endpoint;
+
+    this.TokenRequestHeaderParams = Util.createTokenRequestHeaderParams(this.ConsumerKey, { token: this.Token, params });
+    this.TokenRequestHeaderParams = Util.createSignature(this.TokenRequestHeaderParams, method, uploadURL + apiEndpoint, this.ConsumerSecret, this.TokenSecret);
+
+    const result = await Request<T>(
+      method,
+      uploadURL + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
       this.TokenRequestHeaderParams,
     );
 
