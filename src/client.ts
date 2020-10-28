@@ -11,8 +11,6 @@ import CustomError from './error';
 
 /* const */
 const baseURL: string = 'https://api.twitter.com';
-const apiURL: string = 'https://api.twitter.com/1.1';
-const api2URL: string = 'https://api.twitter.com/2';
 const requestTokenURL: string = '/oauth/request_token';
 const authorizationURL: string = '/oauth/authorize';
 const accessTokenURL: string = '/oauth/access_token';
