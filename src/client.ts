@@ -12,6 +12,7 @@ import CustomError from './error';
 /* const */
 const baseURL: string = 'https://api.twitter.com';
 const apiURL: string = 'https://api.twitter.com/1.1';
+const api2URL: string = 'https://api.twitter.com/2';
 const requestTokenURL: string = '/oauth/request_token';
 const authorizationURL: string = '/oauth/authorize';
 const accessTokenURL: string = '/oauth/access_token';
@@ -91,15 +92,15 @@ class Client {
   /**
    * call Twitter Api
    */
-  api = async <T>(method: Method, endpoint: string, params: any = {}): Promise<T> => {
+  api = async <T>(method: Method, endpoint: string, params: any = {}, version: '1.1' | '2' = '1.1'): Promise<T> => {
     const apiEndpoint = endpoint.slice(0, 1) !== '/' ? `/${endpoint}` : endpoint;
 
     this.TokenRequestHeaderParams = Util.createTokenRequestHeaderParams(this.ConsumerKey, { token: this.Token, params });
-    this.TokenRequestHeaderParams = Util.createSignature(this.TokenRequestHeaderParams, method, apiURL + apiEndpoint, this.ConsumerSecret, this.TokenSecret);
+    this.TokenRequestHeaderParams = Util.createSignature(this.TokenRequestHeaderParams, method, baseURL + '/' + version + apiEndpoint, this.ConsumerSecret, this.TokenSecret);
 
     const result = await Request<T>(
       method,
-      apiURL + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
+      baseURL + '/' + version + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
       this.TokenRequestHeaderParams,
     );
 

@@ -47,7 +47,7 @@
     "eslint-plugin-react": "^7.17.0",
     "jest": "^24.9.0",
     "react": "^16.9.6",
-    "react-native": "^0.59.8",
+    "react-native": "^0.59.10",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
   },
