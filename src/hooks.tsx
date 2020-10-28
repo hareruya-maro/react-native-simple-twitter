@@ -104,6 +104,7 @@ const useTwitter = (props?: Props) => {
       setAccessToken: client.setAccessToken,
       setConsumerKey: client.setConsumerKey,
       api: client.api,
+      upload: client.upload,
       post: client.post,
       get: client.get,
     },
