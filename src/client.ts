@@ -91,7 +91,7 @@ class Client {
   /**
    * call Twitter Api
    */
-  api = async <T>(method: Method, endpoint: string, params: any = {}, version: '1.1' | '2' = '1.1'): Promise<T> => {
+  api = async <T>(method: Method, endpoint: string, params: any = {}, version: '1.1' | '2' = '1.1', throwError = true): Promise<T> => {
     const apiEndpoint = endpoint.slice(0, 1) !== '/' ? `/${endpoint}` : endpoint;
 
     this.TokenRequestHeaderParams = Util.createTokenRequestHeaderParams(this.ConsumerKey, { token: this.Token, params });
@@ -103,11 +103,11 @@ class Client {
       this.TokenRequestHeaderParams,
     );
 
-    if ('errors' in result) {
+    if ('errors' in result && throwError) {
       throw new CustomError(result);
     }
 
-    return result;
+    return result as T;
   }
 
   /**

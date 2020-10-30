@@ -18,7 +18,7 @@ const request = async <T>(method: Method = 'GET', url: string = '', params: any 
   };
   if (!!data) {
     options.headers["Content-Type"] = 'multipart/form-data';
-    options.body = JSON.stringify(data);
+    options.body = data;
   }
 
   const response = await fetch(uri, options);
