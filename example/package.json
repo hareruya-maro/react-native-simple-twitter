@@ -9,7 +9,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "~36.0.0",
+    "expo": "~49.0.0",
     "expo-constants": "^7.0.0",
     "react": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
