@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Modal,
   SafeAreaView,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 /* npm */
@@ -16,7 +16,7 @@ import Header from './Header';
 /* client */
 import twitter from '../client';
 
-import { ErrorResponse, AccessToken, TwitterUser } from '../types';
+import { AccessToken, ErrorResponse, TwitterUser } from '../types';
 
 type Props = {
   type: 'TouchableOpacity' | 'TouchableHighlight' | 'TouchableWithoutFeedback';
@@ -79,7 +79,7 @@ function TWLoginButton(props: Props) {
       try {
         const response = await twitter.getAccessToken(match[1]);
         setToken(response);
-      } catch (err) {
+      } catch (err: any) {
         console.warn(`[getAccessToken failed] ${err}`);
 
         props.onError(err);

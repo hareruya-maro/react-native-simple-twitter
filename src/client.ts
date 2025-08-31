@@ -1,13 +1,13 @@
 /* lib */
+import CustomError from './error';
 import Request from './request';
-import * as Util from './util';
 import {
+  AccessToken,
+  AccessTokenResponse,
   Method,
   RequestTokenResponse,
-  AccessTokenResponse,
-  AccessToken,
 } from './types';
-import CustomError from './error';
+import * as Util from './util';
 
 /* const */
 const baseURL: string = 'https://api.twitter.com';
@@ -95,13 +95,13 @@ class Client {
     const apiEndpoint = endpoint.slice(0, 1) !== '/' ? `/${endpoint}` : endpoint;
 
     this.TokenRequestHeaderParams = Util.createTokenRequestHeaderParams(this.ConsumerKey, { token: this.Token, params });
-    this.TokenRequestHeaderParams = Util.createSignature(this.TokenRequestHeaderParams, method, baseURL + '/' + version + apiEndpoint, this.ConsumerSecret, this.TokenSecret);
+    this.TokenRequestHeaderParams = Util.createSignature(this.TokenRequestHeaderParams, method, `${baseURL}/${version}${apiEndpoint}`, this.ConsumerSecret, this.TokenSecret);
 
     const result = await Request<T>(
       method,
-      baseURL + '/' + version + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
+      `${baseURL}/${version}${params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint}`,
       this.TokenRequestHeaderParams,
-    );
+    ) as any;
 
     if ('errors' in result && throwError) {
       throw new CustomError(result);
@@ -123,8 +123,8 @@ class Client {
       method,
       uploadURL + (params ? `${apiEndpoint}?${Util.encodeParamsToString(params)}` : apiEndpoint),
       this.TokenRequestHeaderParams,
-      data
-    );
+      data,
+    ) as any;
 
     if ('errors' in result) {
       throw new CustomError(result);
